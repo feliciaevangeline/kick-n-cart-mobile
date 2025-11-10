@@ -10,8 +10,9 @@ Hubungan parent–child (induk–anak) berarti:
 * Parent adalah widget yang membungkus widget lain dan mengatur tata letak atau perilakunya.
 * Child adalah widget yang berada di dalam parent dan menampilkan isi tertentu.
 
-Pada proyek saya, struktur widget nya seperti ini:
+Pada proyek saya, struktur widget-nya seperti ini:
 
+```
 Scaffold
  ├── AppBar
  └── Body (Padding)
@@ -19,6 +20,7 @@ Scaffold
            ├── Row → [InfoCard (NPM), InfoCard (Name), InfoCard (Class)]
            ├── Text ("Selamat datang di Kick n Cart")
            └── GridView → [_ActionCard (All Products), _ActionCard (My Products), _ActionCard (Create Product)]
+```
 
 Contohnya:
 
@@ -64,6 +66,7 @@ Widget ini mengatur berbagai hal penting seperti tema, warna, navigasi, dan hala
 
 Contoh penggunaan di proyek saya:
 
+```dart
 MaterialApp(
   debugShowCheckedModeBanner: false,
   title: 'Kick n Cart',
@@ -74,6 +77,7 @@ MaterialApp(
   ),
   home: const MyHomePage(),
 );
+```
 
 MaterialApp penting karena:
 
@@ -105,13 +109,15 @@ Objek ini sangat penting karena memungkinkan widget untuk berinteraksi dengan li
 
 Dalam proyek saya, context digunakan untuk menampilkan pesan saat tombol ditekan menggunakan SnackBar, seperti berikut:
 
+```dart
 ScaffoldMessenger.of(context)
   ..hideCurrentSnackBar()
   ..showSnackBar(
     SnackBar(content: Text(b.snackbarText)),
   );
+```
 
-Kode ini memberi tau Flutter bahwa _ActionCard berada di dalam Scaffold, sehingga SnackBar bisa muncul pada halaman yang sesuai.
+Kode ini memberi tahu Flutter bahwa _ActionCard berada di dalam Scaffold, sehingga SnackBar bisa muncul pada halaman yang sesuai.
 Secara singkat, BuildContext berfungsi sebagai penghubung antara widget dan struktur aplikasi di sekitarnya.
 
 ---
@@ -128,3 +134,66 @@ Perbedaan utamanya:
 
 * Hot reload: cepat, mempertahankan data, cocok untuk perubahan tampilan kecil.
 * Hot restart: memulai ulang sepenuhnya, digunakan untuk perubahan besar seperti menambah variabel atau mengubah struktur utama aplikasi.
+
+---
+
+berikut versi yang sudah **tanpa format teks tambahan (tidak ada bold atau italic)**, tapi tetap rapi dan terstruktur:
+
+---
+
+## ============== TUGAS 8 ==============
+
+### 1. Jelaskan perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()` pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+
+Navigator.push() digunakan untuk menambahkan halaman baru di atas halaman yang sedang aktif tanpa menghapus halaman sebelumnya, sehingga pengguna masih bisa kembali ke halaman awal menggunakan tombol back.
+Sedangkan Navigator.pushReplacement() akan mengganti halaman yang sedang aktif dengan halaman baru, dan halaman sebelumnya akan dihapus dari navigation stack.
+
+Pada aplikasi ini, keduanya digunakan sesuai kebutuhan:
+
+* Navigator.push() dipakai ketika membuka halaman sementara, seperti form tambah produk, agar pengguna bisa kembali ke halaman utama setelah selesai mengisi form.
+* Navigator.pushReplacement() digunakan pada navigasi melalui Drawer, agar ketika berpindah ke halaman lain seperti “Tambah Produk” atau “Halaman Utama”, halaman sebelumnya tidak menumpuk di memori.
+
+Jadi, push() digunakan untuk perpindahan halaman yang sifatnya sementara, sedangkan pushReplacement() lebih cocok untuk navigasi utama antar halaman agar aplikasi tetap ringan dan efisien.
+
+---
+
+### 2. Bagaimana kamu memanfaatkan hierarchy widget seperti `Scaffold`, `AppBar`, dan `Drawer` untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+
+Ketiga widget tersebut berperan penting dalam menciptakan struktur halaman yang seragam di seluruh aplikasi:
+
+* Scaffold digunakan sebagai struktur dasar yang menyediakan area untuk AppBar, Body, dan Drawer.
+* AppBar menampilkan judul aplikasi “Kick n Cart” di bagian atas setiap halaman, dengan warna tema yang konsisten.
+* Drawer menjadi navigasi utama yang berisi opsi seperti “Halaman Utama” dan “Tambah Produk” agar pengguna dapat berpindah antar halaman dengan mudah.
+
+---
+
+### 3. Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti `Padding`, `SingleChildScrollView`, dan `ListView` saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+
+Ketiga widget ini membantu menata tampilan form agar lebih rapi, nyaman, dan mudah diakses di berbagai ukuran layar:
+
+* Padding digunakan untuk memberi jarak antar elemen agar form tidak terlihat sempit dan lebih enak dilihat.
+  Contohnya pada halaman Tambah Produk, setiap TextFormField diberi padding agar tidak menempel satu sama lain.
+* SingleChildScrollView memungkinkan seluruh form bisa scroll ke bawah ketika layar tidak cukup menampilkan semua input.
+  Hal ini penting agar field tetap bisa diisi meskipun keyboard muncul.
+* ListView digunakan jika elemen form bersifat dinamis dan jumlahnya bisa bertambah. Namun pada proyek ini, elemen form bersifat statis, sehingga digunakan Column di dalam SingleChildScrollView.
+
+Dengan kombinasi ini, tampilan form tetap responsif, tidak terpotong, dan nyaman digunakan baik di perangkat kecil maupun besar.
+
+---
+
+### 4. Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+
+Penyesuaian warna tema dilakukan melalui properti ThemeData pada widget MaterialApp.
+Warna utama toko ditetapkan menggunakan ColorScheme.fromSwatch(primarySwatch: Colors.blue) dengan tambahan secondary: Colors.blueAccent agar seluruh komponen seperti AppBar, Button, dan teks memiliki warna yang konsisten.
+
+Contohnya dalam proyek:
+
+```dart
+theme: ThemeData(
+  colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+      .copyWith(secondary: Colors.blueAccent),
+  useMaterial3: true,
+),
+```
+
+Dengan pengaturan ini, aplikasi Kick n Cart memiliki tampilan yang seragam.

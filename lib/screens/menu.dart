@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kick_n_cart/widgets/left_drawer.dart';
+import 'package:kick_n_cart/widgets/product_card.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -11,24 +13,24 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Spesifikasi 3 tombol
-    final buttons = <_ButtonSpec>[
-      _ButtonSpec(
-        label: 'All Products',
-        icon: Icons.list_alt,
-        color: Colors.blue, 
-        snackbarText: 'Kamu telah menekan tombol All Products',
+    final List<ProductButton> buttons = [
+      ProductButton(
+        'All Products',
+        Icons.list_alt,
+        Colors.blue,
+        'Kamu telah menekan tombol All Products',
       ),
-      _ButtonSpec(
-        label: 'My Products',
-        icon: Icons.inventory_2,
-        color: Colors.green, 
-        snackbarText: 'Kamu telah menekan tombol My Products',
+      ProductButton(
+        'My Products',
+        Icons.inventory_2,
+        Colors.green,
+        'Kamu telah menekan tombol My Products',
       ),
-      _ButtonSpec(
-        label: 'Create Product',
-        icon: Icons.add_box,
-        color: Colors.red, 
-        snackbarText: 'Kamu telah menekan tombol Create Product',
+      ProductButton(
+        'Create Product',
+        Icons.add_box,
+        Colors.red,
+        'Kamu telah menekan tombol Create Product',
       ),
     ];
 
@@ -43,6 +45,9 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+
+      drawer: const LeftDrawer(),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -74,20 +79,7 @@ class MyHomePage extends StatelessWidget {
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               crossAxisCount: 3,
-              children: buttons.map((b) {
-                return _ActionCard(
-                  label: b.label,
-                  icon: b.icon,
-                  color: b.color,
-                  onTap: () {
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(
-                        SnackBar(content: Text(b.snackbarText)),
-                      );
-                  },
-                );
-              }).toList(),
+              children: buttons.map((btn) => ProductCard(btn)).toList(),
             ),
           ],
         ),
@@ -119,61 +111,4 @@ class InfoCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class _ActionCard extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _ActionCard({
-    required this.label,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: color,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white, size: 32),
-              const SizedBox(height: 6),
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ButtonSpec {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final String snackbarText;
-  const _ButtonSpec({
-    required this.label,
-    required this.icon,
-    required this.color,
-    required this.snackbarText,
-  });
 }

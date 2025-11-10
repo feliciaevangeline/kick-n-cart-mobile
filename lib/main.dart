@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kick_n_cart/menu.dart';
+import 'package:kick_n_cart/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
             .copyWith(secondary: Colors.blueAccent),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
